@@ -66,7 +66,7 @@ public class MapperMonitor {
 		if ( echoSocket != null && os != null && is != null) {
 			try {
 				// メッセージの送信
-				String message = URLEncoder.encode(key, "UTF-8");
+				String message = URLEncoder.encode((String)key, "UTF-8");
 				os.writeBytes(message + "\n");
 
 				// サーバーからのメッセージを受け取り、出力
