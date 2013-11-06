@@ -24,6 +24,7 @@ import com.github.karahiyo.hanoi_picker;
 @Aspect
 public class MapperMonitor {
 
+	private static final String HOST = "localhost";
 	private static final int PORT = 9999;
 
 	/** server socket timeout(ms) */
@@ -51,7 +52,7 @@ public class MapperMonitor {
 
 		// Socketの準備
 		try {
-			echoSocket = new Socket("localhost", PORT);
+			echoSocket = new Socket(HOST, PORT);
 			echoSocket.setSoTimeout(TIMEOUT_SERVER_SOCKET);		
 			os = new DataOutputStream( echoSocket.getOutputStream());
 			is = new BufferedReader( new InputStreamReader(echoSocket.getInputStream()));
