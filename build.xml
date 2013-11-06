@@ -456,6 +456,14 @@
     <taskdef classname="org.apache.jasper.JspC" name="jsp-compile" >
       <classpath refid="classpath"/>
     </taskdef>
+    <taskdef 
+      resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+      <classpath>
+        <pathelement location="lib/aspectjrt.jar" />
+        <pathelement location="lib/aspectjtools.jar" />
+      </classpath>
+    </taskdef>
+ 
     <jsp-compile
       uriroot="${src.webapps}/task"
       outputdir="${build.src}"
@@ -471,19 +479,17 @@
     </jsp-compile>
 
     <!-- Compile Java files (excluding JSPs) checking warnings -->
-    <javac 
+    <iajc 
       encoding="${build.encoding}" 
-      srcdir="${mapred.src.dir};${build.src}" 
-      includes="org/apache/hadoop/**/*.java"
+      srcdir="${mapred.src.dir};${build.src};${monitor.src.dir};${basedir}/aspect"
+      includes="org/apache/hadoop/**/*.java,aj/hadoop/monitor/**/*.java,org/aspectj/**/*.class"
       destdir="${build.classes}"
       debug="${javac.debug}"
-      optimize="${javac.optimize}"
       target="${targetJavaVersion}"
       source="${javac.version}"
       deprecation="${javac.deprecation}">
-      <compilerarg line="${javac.args} ${javac.args.warnings}" />
       <classpath refid="classpath"/>
-    </javac>   
+    </iajc>   
 
     <copy todir="${build.classes}">
       <fileset dir="${mapred.src.dir}" includes="**/*.properties"/>
