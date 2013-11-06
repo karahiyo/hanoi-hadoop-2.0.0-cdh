@@ -30,14 +30,12 @@ public class MapperMonitor {
 	/** server socket timeout(ms) */
 	public static final int    TIMEOUT_SERVER_SOCKET     = 500;
 
-	public MapperMonitor() {}
-
 	@Pointcut ("call(void org.apache.hadoop.mapreduce.Mapper.Context+.write" +
 			"(" +
 			"java.lang.Object, " +
 			"java.lang.Object, " +
 			"))" +
-			"&& args(word, one)")
+			"&& args(key, value)")
 	public void pointcut_mapper_out(Object key, Object value){}
 
 

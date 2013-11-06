@@ -30,7 +30,7 @@ public class HanoiPicker {
 	public void atTaskTrackerNew(){}
 
 	@Around( value = "atTaskTrackerNew()" )
-	public void start_picker_daemon( JoinPoint thisJoinPoint) {
+	public void start_picker_daemon( ProceedingJoinPoint thisJoinPoint) {
 		PickerDaemon pickerDaemon = new PickerDaemon();
 		try {
 			pickerDaemon.run();
