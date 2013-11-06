@@ -19,7 +19,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 
-import com.github.karahiyo.hanoi_picker;
+import com.github.karahiyo.hanoi_picker.*;
 
 @Aspect
 public class MapperMonitor {
