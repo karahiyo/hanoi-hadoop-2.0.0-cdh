@@ -41,6 +41,6 @@ public class HanoiPicker {
 			e.printStackTrace();
 		}
 		
-		thisJoinPoint.proceed();
+		return thisJoinPoint.proceed();
 	}
 }
