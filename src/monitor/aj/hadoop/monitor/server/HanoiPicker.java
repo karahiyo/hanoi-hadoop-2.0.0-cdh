@@ -40,5 +40,7 @@ public class HanoiPicker {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		thisJoinPoint.proceed();
 	}
 }
