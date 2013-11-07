@@ -19,7 +19,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 
-import aj.hadoop.monitor.mapreduce.util.PickerClient;
+import aj.hadoop.monitor.util.PickerClient;
 
 @Aspect
 public abstract class MapperMonitor {
