@@ -28,7 +28,7 @@ import com.github.karahiyo.hanoi_picker.PickerDaemon;
 @Aspect
 public class HanoiPicker {
 
-	@Pointcut ( "call(org.apache.hadoop.mapred.TaskTracker.new())" )
+	@Pointcut ( "execution(org.apache.hadoop.mapred.TaskTracker.new(..))" )
 	public void atTaskTrackerNew(){}
 
 	@Around("atTaskTrackerNew()")
