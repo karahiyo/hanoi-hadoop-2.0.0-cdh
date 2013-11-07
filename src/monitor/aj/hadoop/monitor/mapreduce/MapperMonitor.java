@@ -22,7 +22,7 @@ import org.aspectj.lang.Signature;
 import com.github.karahiyo.hanoi_picker.*;
 
 @Aspect
-public class MapperMonitor {
+public abstract class MapperMonitor {
 
 	private static final String HOST = "localhost";
 	private static final int PORT = 9999;
@@ -33,13 +33,12 @@ public class MapperMonitor {
 	@Pointcut ("call(void org.apache.hadoop.mapreduce.Mapper.Context+.write" +
 			"(" +
 			"java.lang.Object, " +
-			"java.lang.Object, " +
+			"java.lang.Object" +
 			"))" +
 			"&& args(key, value)")
 	public void pointcut_mapper_out(Object key, Object value){}
 
-
-	@Before ( value = "pointcut_mapper_out( key, value )")
+	@Before ("pointcut_mapper_out( key, value )")
 	public void logging( JoinPoint thisJoinPoint,
 			Object key,
 			Object value) {
