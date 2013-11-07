@@ -54,10 +54,10 @@
 
   <property name="Name" value="Hadoop"/>
   <property name="name" value="hadoop"/>
-  <property name="version" value="2.0.0-mr1-cdh4.4.0"/>
+  <property name="version" value="2.0.0-mr1-cdh4.4.0-monitor"/>
   <property name="final.name" value="${name}-${version}"/>
   <property name="test.final.name" value="${name}-test-${version}"/>
-  <property name="year" value="2009"/>
+  <property name="year" value="2013"/>
 
   <!-- This gets overridden during package builds to contain the
        revision the patch series was generated from -->
