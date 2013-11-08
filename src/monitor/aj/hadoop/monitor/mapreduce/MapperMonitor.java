@@ -59,7 +59,7 @@ public class MapperMonitor {
 			"java.lang.Object, " +
 			"java.lang.Object" +
 			"))" +
-            "&& target(org.apache.hadoop.mapreduce.Mapper$Context+)" +
+            "&& target(org.apache.hadoop.mapreduce.Mapper.Context+)" +
 			"&& args(key, value)")
 	public void pointcut_mapper_out(Object key, Object value){}
 
