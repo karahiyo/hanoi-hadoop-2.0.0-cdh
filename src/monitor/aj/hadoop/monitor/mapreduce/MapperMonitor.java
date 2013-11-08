@@ -60,6 +60,7 @@ public abstract class MapperMonitor {
 			"java.lang.Object, " +
 			"java.lang.Object" +
 			"))" +
+			"&& cflow(execution(public void org.apache.hadoop.examples.**.map(..)))" +
 			"&& args(key, value)")
 	public void pointcut_mapper_out(Object key, Object value){}
 
