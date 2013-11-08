@@ -20,12 +20,40 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 
 import aj.hadoop.monitor.util.PickerClient;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.util.logging.FileHandler;
+
 
 @Aspect
 public abstract class MapperMonitor {
 
 	private String HOST = "localhost";
 	private int PORT = 9999;
+	
+	/** log file */
+	public static final String LOGFILE = "Hanoi-MethodTraceMonitor.log";
+	
+	/** logger */
+	private Logger logger = null;
+	
+	/** file handler */
+	private FileHandler fh = null;
+	
+	/**
+	 * initialize
+	 */
+	public MapperMonitor() {
+		logger = Logger.getLogger(this.getClass().getName());
+		try {
+			fh = new FileHandler(this.LOGFILE, true);
+			logger.addHandler(fh);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		logger.log(Level.INFO, "Start trace...");
+	}
 
 	@Pointcut ("call(void org.apache.hadoop.mapreduce.Mapper.Context+.write" +
 			"(" +
@@ -43,5 +71,6 @@ public abstract class MapperMonitor {
 		client.setHost(this.HOST);
 		client.setPORT(this.PORT);
 		client.send((String)key);
+		System.err.println("** [POINTCUT]" + (String)key);
 	}
 }
