@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.logging.FileHandler;
 
+import org.apache.hadoop.examples.*;
 
 @Aspect
 public abstract class MapperMonitor {
@@ -60,18 +61,24 @@ public abstract class MapperMonitor {
 			"java.lang.Object, " +
 			"java.lang.Object" +
 			"))" +
-			"&& cflow(execution(public void org.apache.hadoop.examples.**.map(..)))" +
+			"&& cflow(execution(public void org.apache.hadoop.examples.WordCount$TokenizerMapper.map(..)))" +
 			"&& args(key, value)")
 	public void pointcut_mapper_out(Object key, Object value){}
 
-	@Before ("pointcut_mapper_out( key, value )")
+	@Before (value = "pointcut_mapper_out( key, value )")
 	public void logging( JoinPoint thisJoinPoint,
 			Object key,
 			Object value) {
-		PickerClient client = new PickerClient();
-		client.setHost(this.HOST);
-		client.setPORT(this.PORT);
-		client.send((String)key);
+		//PickerClient client = new PickerClient();
+		//client.setHost(this.HOST);
+		//client.setPORT(this.PORT);
+		//client.send((String)key);
+        String outfile = "/tmp" + "/" + this.LOGFILE;
+        FileOutputStream fos = new FileOutputStream(outfile, true);
+        OutputStreamWriter out = new OutputStreamWriter(fos);
+        out.write((String)key);
+        out.close();
 		System.err.println("** [POINTCUT]" + (String)key);
+		System.out.println("** [POINTCUT]" + (String)key);
 	}
 }
