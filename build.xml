@@ -633,28 +633,22 @@
 
   <target name="compile-examples" 
     depends="compile-core,compile-tools,compile-c++-examples">
-    <taskdef 
-      resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
-      <classpath>
-        <pathelement location="lib/aspectjrt.jar" />
-        <pathelement location="lib/aspectjtools.jar" />
-      </classpath>
-    </taskdef>
     <unjar src="lib/aspectjrt.jar" dest="./build/examples"/>
-    <iajc 
-      classpath="org.aspectj"
+    <javac 
       encoding="${build.encoding}" 
-      srcdir="${examples.dir};${monitor.src.dir};${basedir}/aspect"
-      includes="org/apache/hadoop/**/*.java,aj/hadoop/monitor/**/*.java,org/aspectj/**/*.class"
+      srcdir="${examples.dir}"
+      includes="org/apache/hadoop/**/*.java"
       destdir="${build.examples}"
       debug="${javac.debug}"
       target="${targetJavaVersion}"
+      optimize="${javac.optimize}"
       source="${javac.version}"
       deprecation="${javac.deprecation}">
+      <compilerarg line="${javac.args} ${javac.args.warnings}" />
       <classpath>
         <path refid="classpath"/>
       </classpath>
-    </iajc>    
+    </javac>    
   </target>
 
   <!-- ================================================================== -->
