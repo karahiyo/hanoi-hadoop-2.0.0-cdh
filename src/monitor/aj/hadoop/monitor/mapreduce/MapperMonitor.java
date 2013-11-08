@@ -25,7 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.FileHandler;
 
 @Aspect
-public abstract class MapperMonitor {
+public class MapperMonitor {
 
 	private String HOST = "localhost";
 	private int PORT = 9999;
@@ -54,12 +54,12 @@ public abstract class MapperMonitor {
 		logger.log(Level.INFO, "Start trace...");
 	}
 
-	@Pointcut ("call(void org.apache.hadoop.mapreduce.Mapper.Context.write" +
+	@Pointcut ("call(void write" +
 			"(" +
 			"java.lang.Object, " +
 			"java.lang.Object" +
 			"))" +
-			"&& cflow(execution(public void org.apache.hadoop.examples.WordCount$TokenizerMapper.map(..)))" +
+            "&& target(org.apache.hadoop.mapreduce.Mapper$Context+)" +
 			"&& args(key, value)")
 	public void pointcut_mapper_out(Object key, Object value){}
 
@@ -71,18 +71,21 @@ public abstract class MapperMonitor {
 		//client.setHost(this.HOST);
 		//client.setPORT(this.PORT);
 		//client.send((String)key);
+        
+        String ret = "";
 		try {
 	        String outfile = "/tmp" + "/" + this.LOGFILE;
 	        FileOutputStream fos = new FileOutputStream(outfile, true);
 	        OutputStreamWriter out = new OutputStreamWriter(fos);
-	        out.write((String)key);
+            ret += "key:" + (String)key;
+	        out.write(ret);
 	        out.close();
 		} catch (IOException ioe) {
 			System.out.println(ioe);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		System.err.println("** [POINTCUT]" + (String)key);
-		System.out.println("** [POINTCUT]" + (String)key);
+		System.err.println("** [POINTCUT]" + ret);
+		System.out.println("** [POINTCUT]" + ret);
 	}
 }
