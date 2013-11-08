@@ -73,11 +73,17 @@ public abstract class MapperMonitor {
 		//client.setHost(this.HOST);
 		//client.setPORT(this.PORT);
 		//client.send((String)key);
-        String outfile = "/tmp" + "/" + this.LOGFILE;
-        FileOutputStream fos = new FileOutputStream(outfile, true);
-        OutputStreamWriter out = new OutputStreamWriter(fos);
-        out.write((String)key);
-        out.close();
+		try {
+	        String outfile = "/tmp" + "/" + this.LOGFILE;
+	        FileOutputStream fos = new FileOutputStream(outfile, true);
+	        OutputStreamWriter out = new OutputStreamWriter(fos);
+	        out.write((String)key);
+	        out.close();
+		} catch (IOException ioe) {
+			System.out.println(ioe);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 		System.err.println("** [POINTCUT]" + (String)key);
 		System.out.println("** [POINTCUT]" + (String)key);
 	}
