@@ -56,7 +56,7 @@ public class WordSearchMonitor {
                 String outfile = "/tmp" + "/" + this.LOGFILE;
                 FileOutputStream fos = new FileOutputStream(outfile, true);
                 OutputStreamWriter out = new OutputStreamWriter(fos);
-                ret += "key:" + (String)key;
+                ret += "key:" + key;
                 out.write(ret);
                 out.close();
             } catch (IOException ioe) {
@@ -70,8 +70,8 @@ public class WordSearchMonitor {
             PickerClient client = new PickerClient();
             client.setHost(this.HOST);
             client.setPORT(this.PORT);
-            client.send((String)key);
-            System.out.println("** " + (String)key);
+            client.send(ret);
+            System.out.println("** " + ret);
 
 
     }
