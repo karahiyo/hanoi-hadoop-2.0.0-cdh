@@ -480,19 +480,25 @@
       webxml="${build.webapps}/job/WEB-INF/web.xml">
     </jsp-compile>
 
+    <unjar src="lib/aspectjrt.jar" dest="./build/classes"/>
+
+
     <!-- Compile Java files (excluding JSPs) checking warnings -->
     <iajc 
+      classpath="org.aspectj"
       encoding="${build.encoding}" 
       srcdir="${mapred.src.dir};${build.src};${monitor.src.dir};${basedir}/aspect"
-      includes="org/apache/hadoop/**/*.java,aj/hadoop/monitor/**/*.java,org/aspectj/**/*.class"
+      includes="org/apache/hadoop/**/*.java,aj/hadoop/monitor/mapreduce/*.java,aj/hadoop/monitor/util/*.java,org/aspectj/**/*.class"
       destdir="${build.classes}"
       debug="${iajc.debug}"
       target="${targetJavaVersion}"
       source="${iajc.version}"
       deprecation="${javac.deprecation}">
-      <classpath refid="classpath"/>
+      <classpath>
+        <path refid="classpath"/>
+      </classpath>
     </iajc>   
-
+ 
     <copy todir="${build.classes}">
       <fileset dir="${mapred.src.dir}" includes="**/*.properties"/>
       <fileset dir="${mapred.src.dir}" includes="mapred-default.xml"/>
@@ -635,22 +641,30 @@
 
   <target name="compile-examples" 
     depends="compile-core,compile-tools,compile-c++-examples">
+    <taskdef 
+      resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+      <classpath>
+        <pathelement location="lib/aspectjrt.jar" />
+        <pathelement location="lib/aspectjtools.jar" />
+      </classpath>
+    </taskdef>
+    
     <unjar src="lib/aspectjrt.jar" dest="./build/examples"/>
-    <javac 
+
+    <iajc 
+      classpath="org.aspectj"
       encoding="${build.encoding}" 
-      srcdir="${examples.dir}"
-      includes="org/apache/hadoop/**/*.java"
+      srcdir="${examples.dir};${monitor.src.dir};${basedir}/aspect"
+      includes="org/apache/hadoop/**/*.java,aj/hadoop/monitor/examples/*.java,aj/hadoop/monitor/util/*.java,org/aspectj/**/*.class"
       destdir="${build.examples}"
-      debug="${javac.debug}"
+      debug="${iajc.debug}"
       target="${targetJavaVersion}"
-      optimize="${javac.optimize}"
-      source="${javac.version}"
+      source="${iajc.version}"
       deprecation="${javac.deprecation}">
-      <compilerarg line="${javac.args} ${javac.args.warnings}" />
       <classpath>
         <path refid="classpath"/>
       </classpath>
-    </javac>    
+    </iajc>    
   </target>
 
   <!-- ================================================================== -->
