@@ -55,7 +55,7 @@ public abstract class MapperMonitor {
 		logger.log(Level.INFO, "Start trace...");
 	}
 
-	@Pointcut ("call(void org.apache.hadoop.mapreduce.Mapper.Context+.write" +
+	@Pointcut ("call(void org.apache.hadoop.mapreduce.Mapper.Context.write" +
 			"(" +
 			"java.lang.Object, " +
 			"java.lang.Object" +
