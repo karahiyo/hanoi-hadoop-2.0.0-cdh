@@ -27,8 +27,8 @@ import aj.hadoop.monitor.util.PickerClient;
 @Aspect
 public class WordSearchMonitor {
 
-	private String HOST = "localhost";
-	private int PORT = 9999;
+	private String HOST = "127.0.0.1";
+	private int PORT = 55000;
 	
 	/** log file */
 	public static final String LOGFILE = "Hanoi-MethodTraceMonitor.log";
@@ -68,8 +68,6 @@ public class WordSearchMonitor {
             System.out.println("** [POINTCUT]" + ret);
             
             PickerClient client = new PickerClient();
-            client.setHost(this.HOST);
-            client.setPORT(this.PORT);
             client.send(ret);
             System.out.println("** " + ret);
 

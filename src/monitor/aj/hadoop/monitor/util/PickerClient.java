@@ -1,71 +1,52 @@
 package aj.hadoop.monitor.util;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Socket;
-import java.net.URLEncoder;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class PickerClient {
 
-	private int PORT = 9999;
-	
+	/** host name */
 	private String HOST = "localhost";
 
+	/** port */
+	private int PORT = 55000;
+
 	/** server socket timeout(ms) */
-    public static final int TIMEOUT_SERVER_SOCKET     = 500;
-    
-    public void setHost(String host){
-    	this.HOST = host;
-    }
-    
-    public void setPORT(int port) {
-    	this.PORT = port;
-    }
-    
-	public void send(String msg) {
-		// ソケットや入出力用のストリームの宣言
-		Socket echoSocket = null;
-		DataOutputStream os = null;
-		BufferedReader is = null;
+	public static final int TIMEOUT_SERVER_SOCKET     = 500;
 
-		// Socketの準備
-		try {
-			echoSocket = new Socket(this.HOST, this.PORT);
-			echoSocket.setSoTimeout(TIMEOUT_SERVER_SOCKET);		
-			os = new DataOutputStream( echoSocket.getOutputStream());
-			is = new BufferedReader( new InputStreamReader(echoSocket.getInputStream()));
-		} catch ( UnknownHostException e) {
-			System.err.println("Don't know about host: " + this.HOST + ":" + this.PORT);
-		} catch ( IOException e) {
-			System.err.println("Could't get I/O for the connection to: " + this.HOST + ":" + this.PORT);
-		}
+	/** UDP socket for send */
+	DatagramSocket sendSocket = new DatagramSocket();
 
-		// テストメッセージの送信
-		if ( echoSocket != null && os != null && is != null) {
-			try {
-				// メッセージの送信
-				String message = URLEncoder.encode(msg, "UTF-8");
-				os.writeBytes(message + "\n");
+	/** setup send host */
+	InetAddress inetAddress = InetAddress.getByName("127.0.0.1");
 
-				// サーバーからのメッセージを受け取り、出力
-				String response;
-				if ( (response = is.readLine()) != null) {
-					System.out.println( "Server: " + response);
-				}
-
-				// 開いたソケットをクローズ
-				os.close();
-				is.close();
-				echoSocket.close();
-			} catch (UnknownHostException e) {
-				System.err.println("Trying to connect to unknown host: " + e);
-			} catch (IOException e) {
-				System.err.println("IOException: " + e);
-			}
-		}
+	/**
+	 * initialize
+	 */
+	public PickerClient() throws SocketException, UnknownHostException{
 	}
 
+	public void setHost(String host){
+		this.HOST = host;
+	}
+
+	public void setPORT(int port) {
+		this.PORT = port;
+	}
+
+	public boolean send(String msg) throws Exception{
+		// メッセージの送信
+		byte[] buf  = msg.getBytes("UTF-8");
+		DatagramPacket packet = new DatagramPacket(buf, buf.length, inetAddress, this.PORT);
+		sendSocket.send(packet);
+		return true;
+	}
+
+	public boolean socketClose() {
+		sendSocket.close();
+		return true;
+	}
 }
