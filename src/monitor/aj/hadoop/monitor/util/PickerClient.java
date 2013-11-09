@@ -1,71 +1,80 @@
 package aj.hadoop.monitor.util;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Socket;
-import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class PickerClient {
 
-	private int PORT = 9999;
-	
+	/** host name */
 	private String HOST = "localhost";
 
-	/** server socket timeout(ms) */
-    public static final int TIMEOUT_SERVER_SOCKET     = 500;
-    
-    public void setHost(String host){
-    	this.HOST = host;
-    }
-    
-    public void setPORT(int port) {
-    	this.PORT = port;
-    }
-    
-	public void send(String msg) {
-		// ソケットや入出力用のストリームの宣言
-		Socket echoSocket = null;
-		DataOutputStream os = null;
-		BufferedReader is = null;
+	/** port */
+	private int PORT = 55000;
 
-		// Socketの準備
+	/** server socket timeout(ms) */
+	public static final int TIMEOUT_SERVER_SOCKET     = 500;
+
+	/** UDP socket for send */
+	DatagramSocket sendSocket = null;
+	InetAddress inetAddress = null;
+
+	/**
+	 * initialize
+	 */
+	public PickerClient() {
+
 		try {
-			echoSocket = new Socket(this.HOST, this.PORT);
-			echoSocket.setSoTimeout(TIMEOUT_SERVER_SOCKET);		
-			os = new DataOutputStream( echoSocket.getOutputStream());
-			is = new BufferedReader( new InputStreamReader(echoSocket.getInputStream()));
-		} catch ( UnknownHostException e) {
+			sendSocket = new DatagramSocket(this.PORT);
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
+
+		/** setup send host */
+		try {
+			inetAddress = InetAddress.getByName("127.0.0.1");
+		} catch ( UnknownHostException uhe) {
 			System.err.println("Don't know about host: " + this.HOST + ":" + this.PORT);
-		} catch ( IOException e) {
+		} catch ( IOException ioe) {
 			System.err.println("Could't get I/O for the connection to: " + this.HOST + ":" + this.PORT);
 		}
 
-		// テストメッセージの送信
-		if ( echoSocket != null && os != null && is != null) {
-			try {
-				// メッセージの送信
-				String message = URLEncoder.encode(msg, "UTF-8");
-				os.writeBytes(message + "\n");
-
-				// サーバーからのメッセージを受け取り、出力
-				String response;
-				if ( (response = is.readLine()) != null) {
-					System.out.println( "Server: " + response);
-				}
-
-				// 開いたソケットをクローズ
-				os.close();
-				is.close();
-				echoSocket.close();
-			} catch (UnknownHostException e) {
-				System.err.println("Trying to connect to unknown host: " + e);
-			} catch (IOException e) {
-				System.err.println("IOException: " + e);
-			}
-		}
 	}
 
+	public void setHost(String host){
+		this.HOST = host;
+	}
+
+	public void setPORT(int port) {
+		this.PORT = port;
+	}
+
+	public boolean send(String msg) {
+		// メッセージの送信
+		byte[] buf = null;
+		try {
+			buf = msg.getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		if(buf == null || msg == null) {
+			return false;
+		}
+		DatagramPacket packet = new DatagramPacket(buf, buf.length, inetAddress, this.PORT);
+		try {
+			sendSocket.send(packet);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public boolean socketClose() {
+		sendSocket.close();
+		return true;
+	}
 }
