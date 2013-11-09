@@ -29,7 +29,7 @@ public class PickerClient {
 	public PickerClient() {
 
 		try {
-			sendSocket = new DatagramSocket(this.PORT);
+			sendSocket = new DatagramSocket();
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}

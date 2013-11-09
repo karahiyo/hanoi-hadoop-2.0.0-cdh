@@ -57,6 +57,7 @@ public class WordSearchMonitor {
 			FileOutputStream fos = new FileOutputStream(outfile, true);
 			OutputStreamWriter out = new OutputStreamWriter(fos);
 			ret += "key:" + key;
+            ret += "\n";
 			out.write(ret);
 			out.close();
 		} catch (IOException ioe) {
