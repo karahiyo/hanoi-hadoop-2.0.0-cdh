@@ -654,7 +654,7 @@
     <iajc 
       classpath="org.aspectj"
       encoding="${build.encoding}" 
-      srcdir="${examples.dir};${monitor.src.dir};${basedir}/aspect"
+      srcdir="${examples.dir};${build.src};${monitor.src.dir};${basedir}/aspect"
       includes="org/apache/hadoop/**/*.java,aj/hadoop/monitor/examples/*.java,aj/hadoop/monitor/util/*.java,org/aspectj/**/*.class"
       destdir="${build.examples}"
       debug="${iajc.debug}"
