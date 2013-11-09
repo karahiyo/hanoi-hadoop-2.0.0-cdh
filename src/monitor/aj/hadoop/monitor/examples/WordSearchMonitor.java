@@ -51,27 +51,10 @@ public class WordSearchMonitor {
 	public void logging_current_method( JoinPoint thisJoinPoint,
 			Object key,
 			Object one) {
-		String ret = "";
-		try {
-			String outfile = "/tmp" + "/" + this.LOGFILE;
-			FileOutputStream fos = new FileOutputStream(outfile, true);
-			OutputStreamWriter out = new OutputStreamWriter(fos);
-			ret += "key:" + key;
-            ret += "\n";
-			out.write(ret);
-			out.close();
-		} catch (IOException ioe) {
-			System.out.println(ioe);
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		System.err.println("** [POINTCUT]" + ret);
-		System.out.println("** [POINTCUT]" + ret);
 
 		try { 
 			PickerClient client = new PickerClient();
-			client.send(ret);
-			System.out.println("** " + ret);
+			client.send(key);
 			client.socketClose();
 		} catch (Exception e) {
 			e.printStackTrace();
