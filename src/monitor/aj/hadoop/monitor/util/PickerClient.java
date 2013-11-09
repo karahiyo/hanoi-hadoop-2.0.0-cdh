@@ -1,5 +1,7 @@
-package aj.hadoop.monitor.util;
+package com.github.karahiyo.hanoi.picker_client;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -18,15 +20,29 @@ public class PickerClient {
 	public static final int TIMEOUT_SERVER_SOCKET     = 500;
 
 	/** UDP socket for send */
-	DatagramSocket sendSocket = new DatagramSocket();
-
-	/** setup send host */
-	InetAddress inetAddress = InetAddress.getByName("127.0.0.1");
+	DatagramSocket sendSocket = null;
+	InetAddress inetAddress = null;
 
 	/**
 	 * initialize
 	 */
-	public PickerClient() throws SocketException, UnknownHostException{
+	public PickerClient() {
+
+		try {
+			sendSocket = new DatagramSocket(this.PORT);
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
+
+		/** setup send host */
+		try {
+			inetAddress = InetAddress.getByName("127.0.0.1");
+		} catch ( UnknownHostException uhe) {
+			System.err.println("Don't know about host: " + this.HOST + ":" + this.PORT);
+		} catch ( IOException ioe) {
+			System.err.println("Could't get I/O for the connection to: " + this.HOST + ":" + this.PORT);
+		}
+
 	}
 
 	public void setHost(String host){
@@ -37,11 +53,23 @@ public class PickerClient {
 		this.PORT = port;
 	}
 
-	public boolean send(String msg) throws Exception{
+	public boolean send(String msg) {
 		// メッセージの送信
-		byte[] buf  = msg.getBytes("UTF-8");
+		byte[] buf = null;
+		try {
+			buf = msg.getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		if(buf == null || msg == null) {
+			return false;
+		}
 		DatagramPacket packet = new DatagramPacket(buf, buf.length, inetAddress, this.PORT);
-		sendSocket.send(packet);
+		try {
+			sendSocket.send(packet);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 
