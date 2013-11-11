@@ -35,7 +35,7 @@ public class ExampleDriver {
     int exitCode = -1;
     ProgramDriver pgd = new ProgramDriver();
     try {	
-      pgd.addClass("simple wordsearch", SimpleWordSearch.class, 
+      pgd.addClass("simplewordsearch", SimpleWordSearch.class, 
                 	"no aspect, A map/reduce program that search  the words in the input files.");
       pgd.addClass("wordsearch", WordSearch.class, 
                    "A map/reduce program that search  the words in the input files.");
