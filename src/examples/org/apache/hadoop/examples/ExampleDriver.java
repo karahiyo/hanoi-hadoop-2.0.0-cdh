@@ -34,7 +34,9 @@ public class ExampleDriver {
   public static void main(String argv[]){
     int exitCode = -1;
     ProgramDriver pgd = new ProgramDriver();
-    try {
+    try {	
+      pgd.addClass("simple wordsearch", SimpleWordSearch.class, 
+                	"no aspect, A map/reduce program that search  the words in the input files.");
       pgd.addClass("wordsearch", WordSearch.class, 
                    "A map/reduce program that search  the words in the input files.");
       pgd.addClass("wordcount", WordCount.class, 
