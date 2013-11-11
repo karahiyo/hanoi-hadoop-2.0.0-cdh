@@ -7,6 +7,7 @@ import java.text.*;
 import java.lang.*;
 import java.lang.management.*;
 import java.util.StringTokenizer;
+import java.util.concurrent.Phaser;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +35,7 @@ public class WordCountMonitor {
 	public static final String LOGFILE = "Hanoi-MethodTraceMonitor.log";
 
 	/**
-	 * pointcut
+	 * pointcut for map method
 	 * @param word
 	 * @param one
 	 */
@@ -47,14 +48,59 @@ public class WordCountMonitor {
 			"&& args(word, one)")
 	public void catch_map_method(Object word, Object one){}
 
+	/**
+	 * pointcut for reduce method
+	 * @param word
+	 * @param values
+	 * @param cntext
+	 */
+	@Pointcut ("call(public void org.apache.hadoop.examples.WordCount$IntSumReducer.reduce(" +
+			"(" +
+			"java.lang.Object, " +
+			"java.lang.Object, " +
+			"java.lang.Object" +
+			"))" +
+			"&& args(key, values, context)")
+	public void catch_reduce_method(Object key, Object values, Object context){}
+
+
+	/**
+	 * logging map method using HanoiPicker
+	 * @param thisJoinPoint
+	 * @param key
+	 * @param one
+	 */
 	@Before ( value = "catch_map_method( key, one )")
-	public void logging_current_method( JoinPoint thisJoinPoint,
+	public void logging_map_method( JoinPoint thisJoinPoint,
 			Object key,
 			Object one) {
 
+		String phase = "MAP";
 		try { 
 			PickerClient client = new PickerClient();
-			client.send(key);
+			client.send(phase + "," + key);
+			client.socketClose();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * logging reduce method using HanoiPicker
+	 * @param thisJoinPoint
+	 * @param key
+	 * @param one
+	 */
+	@Before ( value = "catch_reduce_method( key, values, context )")
+	public void logging_reduce_method( JoinPoint thisJoinPoint,
+			Object key,
+			Object values,
+			Object context) {
+
+		String phase = "SHUFFLE";
+		try { 
+			PickerClient client = new PickerClient();
+			client.send(phaser + "," + key);
 			client.socketClose();
 		} catch (Exception e) {
 			e.printStackTrace();
