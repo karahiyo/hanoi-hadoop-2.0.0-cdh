@@ -54,7 +54,7 @@ public class WordSearchMonitor {
 
 		try { 
 			PickerClient client = new PickerClient();
-			client.send(key);
+			client.send(key.toString());
 			client.socketClose();
 		} catch (Exception e) {
 			e.printStackTrace();
