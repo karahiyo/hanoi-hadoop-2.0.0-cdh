@@ -54,14 +54,8 @@ public class WordCountMonitor {
 	 * @param values
 	 * @param cntext
 	 */
-	@Pointcut ("call(public void org.apache.hadoop.examples.WordCount$IntSumReducer.reduce(" +
-			"(" +
-			"java.lang.Object, " +
-			"java.lang.Object, " +
-			"java.lang.Object" +
-			"))" +
-			"&& args(key, values, context)")
-	public void catch_reduce_method(Object key, Object values, Object context){}
+	@Pointcut ("execution(void org.apache.hadoop.examples.WordCount.IntSumReducer.reduce(..))")
+	public void catch_reduce_method(){}
 
 
 	/**
@@ -91,16 +85,14 @@ public class WordCountMonitor {
 	 * @param key
 	 * @param one
 	 */
-	@Before ( value = "catch_reduce_method( key, values, context )")
-	public void logging_reduce_method( JoinPoint thisJoinPoint,
-			Object key,
-			Object values,
-			Object context) {
+	@Before ( value = "catch_reduce_method()")
+	public void logging_reduce_method( JoinPoint thisJoinPoint) {
 
 		String phase = "SHUFFLE";
 		try { 
+            Object[] params = thisJoinPoint.getArgs();
 			PickerClient client = new PickerClient();
-			client.send(phaser + "," + key);
+			client.send(phase + "," + params[0].toString());
 			client.socketClose();
 		} catch (Exception e) {
 			e.printStackTrace();
