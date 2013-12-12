@@ -28,6 +28,15 @@
     </classpath>
   </taskdef>
 
+  <!-- load aspectjtools tasks to get the "isjc" task. -->
+  <taskdef 
+    resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+    <classpath>
+      <pathelement location="${basedir}/lib/aspectjtools.jar"/>
+    </classpath>
+  </taskdef>
+
+
   <!-- Initializes ivy/libraries.properties and build.properties with CDH versions -->
   <if>
     <and>
@@ -357,13 +366,6 @@
     <pathelement location="${test.src.dir}"/>
     <pathelement location="${build.dir}"/>
   </path>
-
-  <taskdef 
-    resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
-    <classpath>
-      <pathelement location="${lib.dir}/aspectjtools.jar"/>
-    </classpath>
-  </taskdef>
 
   <!-- ====================================================== -->
   <!-- Macro definitions                                      -->
