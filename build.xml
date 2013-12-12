@@ -78,6 +78,7 @@
   <property name="examples.dir" value="${basedir}/src/examples"/>
   <property name="anttasks.dir" value="${basedir}/src/ant"/>
   <property name="lib.dir" value="${basedir}/lib"/>
+  <property name="hanoi.lib.dir" value="${basedir}/lib/hanoi"/>
   <property name="conf.dir" value="${basedir}/conf"/>
   <property name="contrib.dir" value="${basedir}/src/contrib"/>
   <property name="docs.src" value="${basedir}/src/docs"/>
@@ -238,6 +239,8 @@
   <property name="build.ivy.lib.dir" location="${build.ivy.dir}/lib"/>
   <property name="common.ivy.lib.dir" 
     location="${build.ivy.lib.dir}/${ant.project.name}/common"/>
+  <property namw="hanoi.ivy.lib.dir"
+    location="${build.ivy.lib.dir}/${ant.project.name}/hanoi"/>
   <property name="build.ivy.report.dir" location="${build.ivy.dir}/report"/>
 
   <property name="hadoop-core.pom" location="${ivy.dir}/hadoop-core-pom.xml"/>
@@ -315,6 +318,14 @@
       <exclude name="**/excluded/" />
     </fileset>
     <path refid="ivy-common.classpath"/>
+  </path>
+
+  <!-- hanoi classpath -->
+  <path id="hanoi.lib.classpath">
+    <fileset dir="${hanoi.lib.dir}">
+      <include name="**/*.jar" />
+      <exclude name="**/excluded/" />
+    </fileset>
   </path>
 
   <path id="test.lib.classpath">
@@ -1942,6 +1953,10 @@
     <ivy:resolve settingsRef="${ant.project.name}.ivy.settings" conf="common" />
   </target>
 
+  <target name="ivy-resolve-hanoi" depends="ivy-init">
+    <ivy:resolve settingsRef="${ant.project.name}.ivy.settings" conf="hanoi" />
+  </target>
+
   <target name="ivy-resolve-jdiff" depends="ivy-init">
     <ivy:resolve settingsRef="${ant.project.name}.ivy.settings" conf="jdiff" />
   </target>
@@ -1989,6 +2004,13 @@
     <ivy:retrieve settingsRef="${ant.project.name}.ivy.settings"
       pattern="${build.ivy.lib.dir}/${ivy.artifact.retrieve.pattern}"/>
     <ivy:cachepath pathid="ivy-common.classpath" conf="common"/>
+  </target>
+
+  <target name="ivy-retrieve-hanoi" depends="ivy-resolve-hanoi"
+    description="Retrieve Ivy-managed artifacts for the compile configurations">
+    <ivy:retrieve settingsRef="${ant.project.name}.ivy.settings"
+      pattern="${build.ivy.lib.dir}/${ivy.artifact.retrieve.pattern}"/>
+    <ivy:cachepath pathid="ivy-hanoi.classpath" conf="hanoi"/>
   </target>
 
   <target name="ivy-retrieve-releaseaudit" depends="ivy-resolve-releaseaudit"
