@@ -3,3 +3,6 @@ target
 *.swp
 ./.classpath
 build.properties
+.classpath
+.project
+.settings
