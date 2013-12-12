@@ -494,7 +494,7 @@
       source="${iajc.version}"
       deprecation="${javac.deprecation}">
       <classpath>
-        <path refid="classpath"/>
+        <path refid="classpath;hanoi.lib.classpath"/>
       </classpath>
     </iajc>   
  
@@ -651,7 +651,7 @@
       source="${iajc.version}"
       deprecation="${javac.deprecation}">
       <classpath>
-        <path refid="classpath"/>
+        <path refid="classpath;hanoi.lib.classpath"/>
       </classpath>
     </iajc>    
   </target>
