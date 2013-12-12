@@ -74,6 +74,7 @@
 
 
   <property name="core.final.name" value="${name}-core-${version}"/>
+  <property name="hanoi.final.name" value="${name}-hanoi-${version}"/>
   <property name="test.final.name" value="${name}-test-${version}"/>
   <property name="examples.final.name" value="${name}-examples-${version}"/>
   <property name="tools.final.name" value="${name}-tools-${version}"/>
@@ -256,6 +257,8 @@
   <property name="hadoop-core-pom-template.xml" 
     location="${ivy.dir}/hadoop-core-pom-template.xml"/>
   <property name="hadoop-core.jar" location="${build.dir}/${core.final.name}.jar"/>
+  <property name="hadoop-hanoi.pom" location="${ivy.dir}/hadoop-hanoi-pom.xml"/>
+  <property name="hadoop-hanoi.jar" location="${build.dir}/${hanoi.final.name}.jar"/>
   <property name="hadoop-test.pom" location="${ivy.dir}/hadoop-test-pom.xml"/>
   <property name="hadoop-test-pom-template.xml" 
     location="${ivy.dir}/hadoop-test-pom-template.xml" />
@@ -416,7 +419,7 @@
   <!-- ====================================================== -->
   <!-- Stuff needed by all targets                            -->
   <!-- ====================================================== -->
-  <target name="init" depends="jvm-check,ivy-retrieve-common">
+  <target name="init" depends="jvm-check,ivy-retrieve-hanoi,ivy-retrieve-common">
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${build.classes}"/>
     <mkdir dir="${build.tools}"/>
@@ -494,7 +497,8 @@
       source="${iajc.version}"
       deprecation="${javac.deprecation}">
       <classpath>
-        <path refid="classpath;hanoi.lib.classpath"/>
+        <path refid="classpath"/>
+        <path refid="hanoi.lib.classpath"/>
       </classpath>
     </iajc>   
  
@@ -651,7 +655,8 @@
       source="${iajc.version}"
       deprecation="${javac.deprecation}">
       <classpath>
-        <path refid="classpath;hanoi.lib.classpath"/>
+        <path refid="classpath"/>
+        <path refid="hanoi.lib.classpath"/>
       </classpath>
     </iajc>    
   </target>
@@ -1081,6 +1086,7 @@
       <sourcePath path="${tools.src}" />
       <sourcePath path="${basedir}/src/contrib/streaming/src/java" />
       <class location="${build.dir}/${core.final.name}.jar" />
+      <class location="${build.dir}/${hanoi.final.name}.jar" />
       <class location="${build.dir}/${examples.final.name}.jar" />
       <class location="${build.dir}/${tools.final.name}.jar" />
       <class location="${build.dir}/contrib/streaming/${streaming.final.name}.jar" />
@@ -2012,14 +2018,14 @@
     description="Retrieve Ivy-managed artifacts for the compile configurations">
     <ivy:retrieve settingsRef="${ant.project.name}.ivy.settings"
       pattern="${build.ivy.lib.dir}/${ivy.artifact.retrieve.pattern}"/>
-    <ivy:settings id="ivy-common.classpath" file="common"/>
+    <ivy:cachepath pathid="ivy-common.classpath" conf="common"/>
   </target>
 
   <target name="ivy-retrieve-hanoi" depends="ivy-resolve-hanoi"
     description="Retrieve Ivy-managed artifacts for the compile configurations">
     <ivy:retrieve settingsRef="${ant.project.name}.ivy.settings"
       pattern="${build.ivy.lib.dir}/${ivy.artifact.retrieve.pattern}"/>
-    <ivy:settings id="ivy-hanoi.classpath" file="hanoi"/>
+    <ivy:cachepath pathid="ivy-hanoi.classpath" conf="hanoi"/>
   </target>
 
   <target name="ivy-retrieve-releaseaudit" depends="ivy-resolve-releaseaudit"
@@ -2053,6 +2059,7 @@
   <target name="mvn-install" depends="mvn-taskdef,bin-package,set-version"
     description="To install hadoop core and test jars to local filesystem's m2 cache">
     <artifact:pom file="${hadoop-core.pom}" id="hadoop.core"/>
+    <artifact:pom file="${hadoop-hanoi.pom}" id="hadoop.hanoi"/>
     <artifact:pom file="${hadoop-test.pom}" id="hadoop.test"/>
     <artifact:pom file="${hadoop-examples.pom}" id="hadoop.examples"/>
     <artifact:pom file="${hadoop-tools.pom}" id="hadoop.tools"/>
@@ -2060,6 +2067,9 @@
 
     <artifact:install file="${hadoop-core.jar}">
       <pom refid="hadoop.core"/>
+    </artifact:install>
+    <artifact:install file="${hadoop-hanoi.jar}">
+      <pom refid="hadoop.hanoi"/>
     </artifact:install>
     <artifact:install file="${hadoop-test.jar}">
       <pom refid="hadoop.test"/>
@@ -2080,6 +2090,7 @@
 
   <target name="signanddeploy" if="staging" depends="sign">
     <artifact:pom file="${hadoop-core.pom}" id="hadoop.core"/>
+    <artifact:pom file="${hadoop-hanoi.pom}" id="hadoop.hanoi"/>
     <artifact:pom file="${hadoop-test.pom}" id="hadoop.core.test"/>
     <artifact:pom file="${hadoop-examples.pom}" id="hadoop.examples"/>
     <artifact:pom file="${hadoop-tools.pom}" id="hadoop.tools"/>
@@ -2091,6 +2102,12 @@
       <pom refid="hadoop.core"/>
       <attach file="${hadoop-core.jar}.asc" type="jar.asc"/>
       <attach file="${hadoop-core.pom}.asc" type="pom.asc"/>
+    </artifact:deploy>
+    <artifact:deploy file="${hadoop-hanoi.jar}">
+      <remoteRepository id="apache.staging.https" url="${asfstagingrepo}"/>
+      <pom refid="hadoop.hanoi"/>
+      <attach file="${hadoop-hanoi.jar}.asc" type="jar.asc"/>
+      <attach file="${hadoop-hanoi.pom}.asc" type="pom.asc"/>
     </artifact:deploy>
     <artifact:deploy file="${hadoop-test.jar}">
       <remoteRepository id="apache.staging.https" url="${asfstagingrepo}"/> 
@@ -2141,6 +2158,8 @@
     </macrodef>
     <sign-artifact input.file="${hadoop-core.jar}" 
       output.file="${hadoop-core.jar}.asc" gpg.passphrase="${gpg.passphrase}"/>
+    <sign-artifact input.file="${hadoop-hanoi.jar}" 
+      output.file="${hadoop-hanoi.jar}.asc" gpg.passphrase="${gpg.passphrase}"/>
     <sign-artifact input.file="${hadoop-test.jar}" 
       output.file="${hadoop-test.jar}.asc" gpg.passphrase="${gpg.passphrase}"/>
     <sign-artifact input.file="${hadoop-tools.jar}" 
@@ -2151,6 +2170,8 @@
       output.file="${hadoop-streaming.jar}.asc" gpg.passphrase="${gpg.passphrase}"/>
     <sign-artifact input.file="${hadoop-core.pom}" 
       output.file="${hadoop-core.pom}.asc" gpg.passphrase="${gpg.passphrase}"/>
+    <sign-artifact input.file="${hadoop-hanoi.pom}" 
+      output.file="${hadoop-hanoi.pom}.asc" gpg.passphrase="${gpg.passphrase}"/>
     <sign-artifact input.file="${hadoop-test.pom}" 
       output.file="${hadoop-test.pom}.asc" gpg.passphrase="${gpg.passphrase}"/>
     <sign-artifact input.file="${hadoop-tools.pom}" 
@@ -2163,6 +2184,7 @@
 
   <target name="simpledeploy" unless="staging">
     <artifact:pom file="${hadoop-core.pom}" id="hadoop.core"/>
+    <artifact:pom file="${hadoop-hanoi.pom}" id="hadoop.hanoi"/>
     <artifact:pom file="${hadoop-test.pom}" id="hadoop.test"/>
     <artifact:pom file="${hadoop-examples.pom}" id="hadoop.examples"/>
     <artifact:pom file="${hadoop-tools.pom}" id="hadoop.tools"/>
@@ -2172,6 +2194,10 @@
     <artifact:deploy file="${hadoop-core.jar}">
       <remoteRepository id="apache.snapshots.https" url="${asfsnapshotrepo}"/>
       <pom refid="hadoop.core"/>
+    </artifact:deploy>
+    <artifact:deploy file="${hadoop-hanoi.jar}">
+      <remoteRepository id="apache.snapshots.https" url="${asfsnapshotrepo}"/>
+      <pom refid="hadoop.hanoi"/>
     </artifact:deploy>
     <artifact:deploy file="${hadoop-test.jar}">
       <remoteRepository id="apache.snapshots.https" url="${asfsnapshotrepo}"/>
@@ -2193,6 +2219,7 @@
 
   <target name="set-version">
     <delete file="${hadoop-core.pom}"/>
+    <delete file="${hadoop-hanoi.pom}"/>
     <delete file="${hadoop-test.pom}"/>
     <delete file="${hadoop-examples.pom}"/>
     <delete file="${hadoop-tools.pom}"/>
