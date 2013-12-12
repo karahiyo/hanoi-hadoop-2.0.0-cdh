@@ -324,16 +324,6 @@
     </fileset>
   </path>
 
-  <!-- aspectj -->
-  <taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
-    <classpath>
-      <pathelement location="lib/aspectjrt.jar" />
-      <pathelement location="lib/aspectjtools.jar" />
-      <pathelement location="lib/aspectjweaver.jar" />
-      <pathelement location="lib/org.aspectj.matcher.jar" />
-    </classpath>
-  </taskdef>
-
   <!-- the unit test classpath: uses test.src.dir for configuration -->
   <path id="test.classpath">
     <pathelement location="${test.build.extraconf}"/>
@@ -458,13 +448,6 @@
     <taskdef classname="org.apache.jasper.JspC" name="jsp-compile" >
       <classpath refid="classpath"/>
     </taskdef>
-    <taskdef 
-      resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
-      <classpath>
-        <pathelement location="lib/aspectjrt.jar" />
-        <pathelement location="lib/aspectjtools.jar" />
-      </classpath>
-    </taskdef>
  
     <jsp-compile
       uriroot="${src.webapps}/task"
@@ -480,15 +463,11 @@
       webxml="${build.webapps}/job/WEB-INF/web.xml">
     </jsp-compile>
 
-    <unjar src="lib/aspectjrt.jar" dest="./build/classes"/>
-
-
     <!-- Compile Java files (excluding JSPs) checking warnings -->
     <iajc 
-      classpath="org.aspectj"
       encoding="${build.encoding}" 
-      srcdir="${mapred.src.dir};${build.src};${monitor.src.dir};${basedir}/aspect"
-      includes="org/apache/hadoop/**/*.java,aj/hadoop/monitor/mapreduce/*.java,aj/hadoop/monitor/util/*.java,org/aspectj/**/*.class"
+      srcdir="${mapred.src.dir};${build.src};${monitor.src.dir}"
+      includes="org/apache/hadoop/**/*.java,aj/hadoop/monitor/mapreduce/**/*.java"
       destdir="${build.classes}"
       debug="${iajc.debug}"
       target="${targetJavaVersion}"
@@ -640,22 +619,12 @@
   </target>
 
   <target name="compile-examples" 
-    depends="compile-core,compile-tools,compile-c++-examples">
-    <taskdef 
-      resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
-      <classpath>
-        <pathelement location="lib/aspectjrt.jar" />
-        <pathelement location="lib/aspectjtools.jar" />
-      </classpath>
-    </taskdef>
-    
-    <unjar src="lib/aspectjrt.jar" dest="./build/examples"/>
+    depends="ivy-retrieve-examples,compile-core,compile-tools,compile-c++-examples">
 
     <iajc 
-      classpath="org.aspectj"
       encoding="${build.encoding}" 
-      srcdir="${examples.dir};${build.src};${monitor.src.dir};${basedir}/aspect"
-      includes="org/apache/hadoop/**/*.java,aj/hadoop/monitor/examples/*.java,aj/hadoop/monitor/util/*.java,org/aspectj/**/*.class"
+      srcdir="${examples.dir};${build.src};${monitor.src.dir}"
+      includes="org/apache/hadoop/**/*.java,aj/hadoop/monitor/examples/**/*.java"
       destdir="${build.examples}"
       debug="${iajc.debug}"
       target="${targetJavaVersion}"
