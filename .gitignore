@@ -2,3 +2,4 @@ build
 target
 *.swp
 ./.classpath
+build.properties
