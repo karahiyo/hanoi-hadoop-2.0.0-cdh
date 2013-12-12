@@ -36,9 +36,9 @@
     -->
     <!--Private configurations. -->
 
-    <conf name="common" visibility="private" extends="compile" description="common artifacts"/>
-    <conf name="hanoi" visibility="private" extends="compile,runtime" description="Hanoi dependent artifacts"/>
-    <conf name="mapred" visibility="private" extends="compile,runtime" description="Mapred dependent artifacts"/>
+    <conf name="common" visibility="private" extends="compile,hanoi" description="common artifacts"/>
+    <conf name="hanoi" visibility="private" description="Hanoi dependent artifacts"/>
+    <conf name="mapred" visibility="private" extends="compile,runtime,hanoi" description="Mapred dependent artifacts"/>
     <conf name="javadoc" visibility="private" description="artiracts required while performing doc generation" extends="common"/>
     <conf name="test" extends="master" visibility="private" description="the classpath needed to run tests"/>
     <conf name="package" extends="master" description="the classpath needed for packaging"/>
@@ -70,6 +70,12 @@
      <exclude org="commons-daemon" module="commons-daemon"/><!--bad POM-->
      <exclude org="org.apache.commons" module="commons-daemon"/><!--bad POM-->
    </dependency>
+   <!-- hanoi -->
+   <dependency org="org.aspectj" name="aspectjrt"
+               rev="${aspectj.version}" conf="hanoi->default"/>
+   <dependency org="org.fluentd" name="fluent-logger"
+               rev="${fluent-logger.version}" conf="hanoi->default"/>
+   <!-- /hanoi -->
    <dependency org="org.apache.hadoop" name="hadoop-common-instrumented"
                rev="${hadoop-common.version}" conf="system->default"/>
    <dependency org="org.apache.hadoop" name="hadoop-hdfs-instrumented"
