@@ -32,7 +32,7 @@
   <taskdef 
     resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
     <classpath>
-      <pathelement location="${basedir}/lib/aspectjtools.jar"/>
+      <pathelement location="${basedir}/lib/aspectjtools-1.7.4.jar"/>
     </classpath>
   </taskdef>
 
@@ -419,7 +419,7 @@
   <!-- ====================================================== -->
   <!-- Stuff needed by all targets                            -->
   <!-- ====================================================== -->
-  <target name="init" depends="jvm-check,ivy-retrieve-hanoi,ivy-retrieve-common">
+  <target name="init" depends="jvm-check,ivy-retrieve-common,ivy-retrieve-hanoi">
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${build.classes}"/>
     <mkdir dir="${build.tools}"/>
