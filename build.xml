@@ -2012,14 +2012,14 @@
     description="Retrieve Ivy-managed artifacts for the compile configurations">
     <ivy:retrieve settingsRef="${ant.project.name}.ivy.settings"
       pattern="${build.ivy.lib.dir}/${ivy.artifact.retrieve.pattern}"/>
-    <ivy:cachepath pathid="ivy-common.classpath" conf="common"/>
+    <ivy:settings id="ivy-common.classpath" file="common"/>
   </target>
 
   <target name="ivy-retrieve-hanoi" depends="ivy-resolve-hanoi"
     description="Retrieve Ivy-managed artifacts for the compile configurations">
     <ivy:retrieve settingsRef="${ant.project.name}.ivy.settings"
       pattern="${build.ivy.lib.dir}/${ivy.artifact.retrieve.pattern}"/>
-    <ivy:cachepath pathid="ivy-hanoi.classpath" conf="hanoi"/>
+    <ivy:settings id="ivy-hanoi.classpath" file="hanoi"/>
   </target>
 
   <target name="ivy-retrieve-releaseaudit" depends="ivy-resolve-releaseaudit"
