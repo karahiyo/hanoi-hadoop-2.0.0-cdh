@@ -30,10 +30,5 @@
       <artifactId>hadoop-core</artifactId>
       <version>@version</version>
     </dependency>
-    <dependency>
-      <groupId>org.fluentd</groupId>
-      <artifactId>fluent-logger</artifactId>
-      <version>0.2.11</version>
-    </dependency>
   </dependencies>
 </project>
