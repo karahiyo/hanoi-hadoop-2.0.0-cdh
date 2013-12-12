@@ -239,7 +239,7 @@
   <property name="build.ivy.lib.dir" location="${build.ivy.dir}/lib"/>
   <property name="common.ivy.lib.dir" 
     location="${build.ivy.lib.dir}/${ant.project.name}/common"/>
-  <property namw="hanoi.ivy.lib.dir"
+  <property name="hanoi.ivy.lib.dir"
     location="${build.ivy.lib.dir}/${ant.project.name}/hanoi"/>
   <property name="build.ivy.report.dir" location="${build.ivy.dir}/report"/>
 
@@ -630,7 +630,7 @@
   </target>
 
   <target name="compile-examples" 
-    depends="ivy-retrieve-examples,compile-core,compile-tools,compile-c++-examples">
+    depends="compile-core,compile-tools,compile-c++-examples,ivy-retrieve-hanoi">
 
     <iajc 
       encoding="${build.encoding}" 
