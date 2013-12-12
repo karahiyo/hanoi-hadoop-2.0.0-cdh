@@ -358,6 +358,13 @@
     <pathelement location="${build.dir}"/>
   </path>
 
+  <taskdef 
+    resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+    <classpath>
+      <pathelement location="${lib.dir}/aspectjtools.jar"/>
+    </classpath>
+  </taskdef>
+
   <!-- ====================================================== -->
   <!-- Macro definitions                                      -->
   <!-- ====================================================== -->
