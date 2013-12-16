@@ -490,7 +490,7 @@
     <iajc 
       encoding="${build.encoding}" 
       srcdir="${mapred.src.dir};${build.src};${monitor.src.dir}"
-      includes="org/apache/hadoop/**/*.java,aj/hadoop/monitor/mapreduce/**/*.java"
+      includes="org/apache/hadoop/**/*.java,aj/hadoop/monitor/mapreduce/**/*.java,aj/hadoop/monitor/util/**/*.java"
       destdir="${build.classes}"
       debug="${iajc.debug}"
       target="${targetJavaVersion}"
@@ -648,7 +648,7 @@
     <iajc 
       encoding="${build.encoding}" 
       srcdir="${examples.dir};${build.src};${monitor.src.dir}"
-      includes="org/apache/hadoop/**/*.java,com/github/karahiyo/**/*.java,aj/hadoop/monitor/examples/**/*.java"
+      includes="org/apache/hadoop/**/*.java,com/github/karahiyo/**/*.java,aj/hadoop/monitor/examples/**/*.java,aj/hadoop/monitor/util/**/*.java"
       destdir="${build.examples}"
       debug="${iajc.debug}"
       target="${targetJavaVersion}"
