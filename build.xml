@@ -648,7 +648,7 @@
     <iajc 
       encoding="${build.encoding}" 
       srcdir="${examples.dir};${build.src};${monitor.src.dir}"
-      includes="org/apache/hadoop/**/*.java,aj/hadoop/monitor/examples/**/*.java"
+      includes="org/apache/hadoop/**/*.java,com/github/karahiyo/**/*.java,aj/hadoop/monitor/examples/**/*.java"
       destdir="${build.examples}"
       debug="${iajc.debug}"
       target="${targetJavaVersion}"

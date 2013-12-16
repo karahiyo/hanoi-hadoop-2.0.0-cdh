@@ -44,7 +44,7 @@ public class WordCountMonitor {
 			"java.lang.Object, " +
 			"java.lang.Object" +
 			"))" +
-			"&& cflow(execution(public void org.apache.hadoop.examples.WordCount$TokenizerMapper.map(..)))" +
+			"&& cflow(execution(public void com.github.karahiyo.hadoop.mapreduce.examples.WordCount$TokenizerMapper.map(..)))" +
 			"&& args(word, one)")
 	public void catch_map_method(Object word, Object one){}
 
@@ -54,7 +54,7 @@ public class WordCountMonitor {
 	 * @param values
 	 * @param cntext
 	 */
-	@Pointcut ("execution(void org.apache.hadoop.examples.WordCount.IntSumReducer.reduce(..))")
+	@Pointcut ("execution(void com.github.karahiyo.hadoop.mapreduce.examples.WordCount.IntSumReducer.reduce(..))")
 	public void catch_reduce_method(){}
 
 
