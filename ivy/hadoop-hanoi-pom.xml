@@ -46,6 +46,11 @@
       <version>${aspectj.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.msgpack</groupId>
+      <artifactId>msgpack</artifactId>
+      <version>${msgpack.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.fluentd</groupId>
       <artifactId>fluent-logger</artifactId>
       <version>${fluent-logger.version}</version>

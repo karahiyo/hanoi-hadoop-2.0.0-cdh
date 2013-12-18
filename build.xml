@@ -719,9 +719,6 @@
           <attribute name="Main-Class"
             value="org/apache/hadoop/examples/ExampleDriver"/>
         </manifest>
-        <fileset dir="build/ivy/lib/Hadoop/hanoi">
-          <include name="**/*.jar" />
-        </fileset>
       </jar>
     </sequential>
   </macrodef>
