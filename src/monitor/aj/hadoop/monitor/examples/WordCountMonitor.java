@@ -28,11 +28,10 @@ import org.fluentd.logger.FluentLogger;
 @Aspect
 public class WordCountMonitor {
 
-	private static String HOST = "127.0.0.1";
-	private static int PORT = 24224;
+	private static String HOST = getHostName();
 
     /** init java logger */
-    public static FluentLogger LOG = FluentLogger.getLogger("keys.hanoi.keymap.trace", HOST, PORT);
+    public static FluentLogger LOG = FluentLogger.getLogger("keys.hanoi.keymap.trace");
 
 	/**
 	 * pointcut for map method
@@ -71,7 +70,7 @@ public class WordCountMonitor {
 
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("keys", key);
-        LOG.log("map", data);
+        LOG.log("map." + HOST, data);
 	}
 
 	/**
@@ -86,6 +85,15 @@ public class WordCountMonitor {
         Map<String, Object> data = new HashMap<String, Object>();
         Object[] params = thisJoinPoint.getArgs();
         data.put("keys", params[0]);
-        LOG.log("shuffle", data);
+        LOG.log("shuffle." + HOST, data);
 	}
+
+    public static String getHostName() {
+        try {
+            return InetAddress.getLocalHost().getHostName();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "UnknownHost";
+    }
 }

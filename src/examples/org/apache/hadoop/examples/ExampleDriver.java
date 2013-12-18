@@ -42,9 +42,6 @@ public class ExampleDriver {
     int exitCode = -1;
     ProgramDriver pgd = new ProgramDriver();
     try {	
-      pgd.addClass("wordcount_noC", org.apache.hadoop.examples.WordCount_noCombine.class, 
-                	"no aspect, A map/reduce program that search  the words in the input files.");
-
       pgd.addClass("simplewordsearch", org.apache.hadoop.examples.SimpleWordSearch.class, 
                 	"no aspect, A map/reduce program that search  the words in the input files.");
       pgd.addClass("wordsearch", org.apache.hadoop.examples.WordSearch.class, 
