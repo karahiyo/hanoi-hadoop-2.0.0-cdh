@@ -23,16 +23,15 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 
-import aj.hadoop.monitor.util.PickerClient;
+import org.fluentd.logger.FluentLogger;
 
 @Aspect
 public class WordCountMonitor {
 
-	private String HOST = "127.0.0.1";
-	private int PORT = 55000;
+	private static String HOST = getHostName();
 
-	/** log file */
-	public static final String LOGFILE = "Hanoi-MethodTraceMonitor.log";
+    /** init java logger */
+    public static FluentLogger LOG = FluentLogger.getLogger("keys.hanoi.keymap.trace");
 
 	/**
 	 * pointcut for map method
@@ -69,14 +68,9 @@ public class WordCountMonitor {
 			Object key,
 			Object one) {
 
-		String phase = "MAP";
-		try { 
-			PickerClient client = new PickerClient();
-			client.send(phase + "," + key);
-			client.socketClose();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put("keys", key);
+        LOG.log("map." + HOST, data);
 	}
 
 	/**
@@ -88,14 +82,18 @@ public class WordCountMonitor {
 	@Before ( value = "catch_reduce_method()")
 	public void logging_reduce_method( JoinPoint thisJoinPoint) {
 
-		String phase = "SHUFFLE";
-		try { 
-            Object[] params = thisJoinPoint.getArgs();
-			PickerClient client = new PickerClient();
-			client.send(phase + "," + params[0].toString());
-			client.socketClose();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        Map<String, Object> data = new HashMap<String, Object>();
+        Object[] params = thisJoinPoint.getArgs();
+        data.put("keys", params[0]);
+        LOG.log("shuffle." + HOST, data);
 	}
+
+    public static String getHostName() {
+        try {
+            return InetAddress.getLocalHost().getHostName();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "UnknownHost";
+    }
 }

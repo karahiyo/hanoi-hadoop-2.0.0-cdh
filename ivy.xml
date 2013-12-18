@@ -73,6 +73,10 @@
    <!-- hanoi -->
    <dependency org="org.aspectj" name="aspectjrt"
                rev="${aspectj.version}" conf="hanoi->default"/>
+   <dependency org="org.aspectj" name="aspectjweaver"
+               rev="${aspectj.version}" conf="hanoi->default"/>
+             <dependency org="org.msgpack" name="msgpack"
+               rev="${msgpack.version}" conf="hanoi->default"/>
    <dependency org="org.fluentd" name="fluent-logger"
                rev="${fluent-logger.version}" conf="hanoi->default"/>
    <!-- /hanoi -->

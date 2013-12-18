@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.github.karahiyo.hadoop.mapreduce.examples.terasort;-
+package com.github.karahiyo.hadoop.mapreduce.examples.terasort;
 
 import java.io.IOException;
 import java.io.PrintStream;

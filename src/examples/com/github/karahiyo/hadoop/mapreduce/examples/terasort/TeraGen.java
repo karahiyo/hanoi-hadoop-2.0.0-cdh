@@ -18,7 +18,7 @@
 
 package com.github.karahiyo.hadoop.mapreduce.examples.terasort; 
 
-import java.io.datainput;
+import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
