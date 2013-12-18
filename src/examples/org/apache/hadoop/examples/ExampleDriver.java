@@ -51,7 +51,7 @@ public class ExampleDriver {
                    "A map/reduce program that search  the words in the input files.");
       pgd.addClass("wordcount", org.apache.hadoop.examples.WordCount.class, 
                    "A map/reduce program that counts the words in the input files.");
-      pgd.addClass("wordcount_with_aspect", com.github.karahiyo.hadoop.mapreduce.examples.WordCount.class, 
+      pgd.addClass("wordcount_with_monitor", com.github.karahiyo.hadoop.mapreduce.examples.WordCount.class, 
                    "A map/reduce program that counts the words in the input files.");
       pgd.addClass("aggregatewordcount", AggregateWordCount.class, 
                    "An Aggregate based map/reduce program that counts the words in the input files.");
