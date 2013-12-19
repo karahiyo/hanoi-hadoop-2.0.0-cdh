@@ -3,6 +3,8 @@ package com.github.karahiyo.hadoop.mapreduce.examples;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
+import java.util.Map;
+import java.util.HashMap;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -14,7 +16,18 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
+import org.fluentd.logger.FluentLogger;
+
 public class WordCount {
+
+  /** init fluent java logger */
+  public static FluentLogger LOG = FluentLogger.getLogger("keys.hanoi.keymap.trace");
+
+  public static void logging(String key_str, String phase) {
+    Map<String, Object> data = new HashMap<String, Object>();
+    data.put("keys", key_str.split(" "));
+    LOG.log(phase, data);
+  }
 
   public static class TokenizerMapper 
        extends Mapper<Object, Text, Text, IntWritable>{
@@ -24,6 +37,7 @@ public class WordCount {
       
     public void map(Object key, Text value, Context context
                     ) throws IOException, InterruptedException {
+      logging(value.toString(), "MAP");
       StringTokenizer itr = new StringTokenizer(value.toString());
       while (itr.hasMoreTokens()) {
         word.set(itr.nextToken());
@@ -39,6 +53,7 @@ public class WordCount {
     public void reduce(Text key, Iterable<IntWritable> values, 
                        Context context
                        ) throws IOException, InterruptedException {
+      logging(key.toString(), "MAP");
       int sum = 0;
       for (IntWritable val : values) {
         sum += val.get();
